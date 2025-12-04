@@ -129,6 +129,7 @@ const getStatusSeverity = (status: string) => {
   margin: 0;
   line-height: 1.4;
   display: -webkit-box;
+  line-clamp: 2;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
@@ -209,6 +210,7 @@ const getStatusSeverity = (status: string) => {
   word-wrap: break-word;
   overflow-wrap: break-word;
   display: -webkit-box;
+  line-clamp: 2;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
