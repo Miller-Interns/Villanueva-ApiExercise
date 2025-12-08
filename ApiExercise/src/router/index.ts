@@ -4,7 +4,7 @@ import CharactersPage from '../views/characters-page.vue';
 
 enum RouteNames {
   Homepage = 'homepage',
-  TodoList = 'todo-list'
+  CharactersPage = 'characters-page'
 }
 
 const router = createRouter({
@@ -17,7 +17,7 @@ const router = createRouter({
     },
     {
       path: '/app',
-      name: RouteNames.TodoList,
+      name: RouteNames.CharactersPage,
       component: CharactersPage
     }
   ]

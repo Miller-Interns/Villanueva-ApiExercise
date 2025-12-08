@@ -1,43 +1,57 @@
 <template>
+  <!-- Character Card Component: Displays individual character information -->
+  <!-- PrimeVue Card component with custom styling -->
   <Card class="character-card">
     <template #content>
-      <div class="character-card-content">
-        <!-- Image at top -->
+      <!-- Card content container using Tailwind flex utilities -->
+      <div class="flex flex-col h-full">
+        <!-- Image Section: Character portrait with gradient border -->
         <div class="character-image-wrapper">
           <img :src="character.image" :alt="character.name" class="character-image" />
         </div>
 
-        <!-- Details below image -->
-        <div class="character-details-section">
+        <!-- Details Section: Character information below image -->
+        <!-- Using Tailwind padding and flex utilities -->
+        <div class="character-details-section flex flex-col flex-grow gap-1 p-5">
+          <!-- Character Name: Truncated to 2 lines if too long -->
           <h3 class="character-name">{{ character.name }}</h3>
 
-          <div class="character-status-section">
+          <!-- Status Section: Status tag and species info -->
+          <!-- Using Tailwind flex utilities for layout -->
+          <div class="flex flex-col gap-2">
+            <!-- PrimeVue Tag component for character status -->
             <Tag
               :value="character.status"
               :severity="getStatusSeverity(character.status)"
-              class="character-status-tag"
+              class="character-status-tag self-start"
             />
-            <div class="character-species">
-              <i class="pi pi-tag"></i>
+            <!-- Species info with icon using Tailwind flex utilities -->
+            <div class="flex items-center gap-1.5 text-sm text-gray-600 font-medium">
+              <i class="pi pi-tag text-purple-500 text-sm"></i>
               <span>{{ character.species }}</span>
             </div>
           </div>
 
-          <div class="character-info-list">
-            <div class="character-info-item">
-              <i class="pi pi-map-marker"></i>
-              <span>{{ character.location.name }}</span>
+          <!-- Info List: Location, origin, and episode count -->
+          <!-- Using Tailwind flex utilities for vertical list layout -->
+          <div class="flex flex-col gap-2.5 mt-1">
+            <!-- Location info -->
+            <div class="flex items-start gap-2 text-sm text-gray-700 leading-relaxed">
+              <i class="pi pi-map-marker text-red-500 text-base mt-0.5 flex-shrink-0"></i>
+              <span class="flex-1 break-words line-clamp-2">{{ character.location.name }}</span>
             </div>
-            <div class="character-info-item">
-              <i class="pi pi-globe"></i>
-              <span>{{ character.origin.name }}</span>
+            <!-- Origin info -->
+            <div class="flex items-start gap-2 text-sm text-gray-700 leading-relaxed">
+              <i class="pi pi-globe text-blue-500 text-base mt-0.5 flex-shrink-0"></i>
+              <span class="flex-1 break-words line-clamp-2">{{ character.origin.name }}</span>
             </div>
-            <div class="character-info-item">
-              <i class="pi pi-play-circle"></i>
-              <span
-                >{{ character.episode.length }}
-                {{ character.episode.length === 1 ? 'episode' : 'episodes' }}</span
-              >
+            <!-- Episode count with gradient icon -->
+            <div class="flex items-start gap-2 text-sm text-gray-700 leading-relaxed">
+              <i class="pi pi-play-circle character-episode-icon text-base mt-0.5 flex-shrink-0"></i>
+              <span class="flex-1 break-words line-clamp-2">
+                {{ character.episode.length }}
+                {{ character.episode.length === 1 ? 'episode' : 'episodes' }}
+              </span>
             </div>
           </div>
         </div>
@@ -47,14 +61,23 @@
 </template>
 
 <script setup lang="ts">
+// PrimeVue Components
 import Card from 'primevue/card';
 import Tag from 'primevue/tag';
+
+// Types
 import type { Character } from '../types/Character';
 
+// Component props: character data to display
 defineProps<{
   character: Character;
 }>();
 
+/**
+ * Maps character status to PrimeVue Tag severity
+ * @param status - Character status (Alive, Dead, unknown)
+ * @returns PrimeVue severity level for Tag component
+ */
 const getStatusSeverity = (status: string) => {
   if (status === 'Alive') return 'success';
   if (status === 'Dead') return 'danger';
@@ -63,6 +86,7 @@ const getStatusSeverity = (status: string) => {
 </script>
 
 <style scoped>
+/* Card styling with hover effects - complex transitions kept in CSS */
 .character-card {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   border: 2px solid #e0e0e0;
@@ -82,13 +106,7 @@ const getStatusSeverity = (status: string) => {
   border-width: 2px;
 }
 
-.character-card-content {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-}
-
-/* Image Section */
+/* Image wrapper with gradient background and border */
 .character-image-wrapper {
   position: relative;
   overflow: hidden;
@@ -99,6 +117,7 @@ const getStatusSeverity = (status: string) => {
   border-bottom: 3px solid #6366f1;
 }
 
+/* Character image with hover zoom effect */
 .character-image {
   width: 100%;
   height: 100%;
@@ -112,16 +131,12 @@ const getStatusSeverity = (status: string) => {
   transform: scale(1.05);
 }
 
-/* Details Section */
+/* Details section with gradient background */
 .character-details-section {
-  padding: 1.25rem;
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-  gap: 0.25rem;
   background: linear-gradient(to bottom, #ffffff 0%, #f3f4f6 100%);
 }
 
+/* Character name with line clamping for text overflow */
 .character-name {
   font-size: 1.125rem;
   font-weight: 700;
@@ -129,22 +144,12 @@ const getStatusSeverity = (status: string) => {
   margin: 0;
   line-height: 1.4;
   display: -webkit-box;
-  line-clamp: 2;
+  line-clamp: 2; /* Standard property for compatibility */
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
   min-height: 3.15rem;
   margin-bottom: 0.125rem;
-}
-
-.character-status-section {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.character-status-tag {
-  align-self: flex-start;
 }
 
 /* Override PrimeVue success tag color to match gradient theme */
@@ -154,69 +159,15 @@ const getStatusSeverity = (status: string) => {
   border: none;
 }
 
-.character-species {
-  display: flex;
-  align-items: center;
-  gap: 0.375rem;
-  font-size: 0.875rem;
-  color: #6b7280;
-  font-weight: 500;
-}
-
-.character-species i {
-  color: #8b5cf6;
-  font-size: 0.875rem;
-}
-
-.character-info-list {
-  display: flex;
-  flex-direction: column;
-  gap: 0.625rem;
-  margin-top: 0.125rem;
-}
-
-.character-info-item {
-  display: flex;
-  align-items: flex-start;
-  gap: 0.5rem;
-  font-size: 0.875rem;
-  color: #4b5563;
-  line-height: 1.5;
-}
-
-.character-info-item:nth-child(1) i {
-  color: #ef4444;
-}
-
-.character-info-item:nth-child(2) i {
-  color: #3b82f6;
-}
-
-.character-info-item:nth-child(3) i {
+/* Episode icon with gradient text effect */
+.character-episode-icon {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
-.character-info-item i {
-  font-size: 1rem;
-  margin-top: 0.125rem;
-  flex-shrink: 0;
-}
-
-.character-info-item span {
-  flex: 1;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-  display: -webkit-box;
-  line-clamp: 2;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-/* Responsive adjustments */
+/* Responsive adjustments for mobile devices */
 @media (max-width: 768px) {
   .character-card:hover {
     transform: translateY(-2px);
@@ -230,10 +181,6 @@ const getStatusSeverity = (status: string) => {
   .character-name {
     font-size: 1rem;
     min-height: 2.8rem;
-  }
-
-  .character-info-item {
-    font-size: 0.8125rem;
   }
 }
 </style>

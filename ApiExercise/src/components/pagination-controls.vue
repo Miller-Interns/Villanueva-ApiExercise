@@ -1,8 +1,13 @@
 <template>
-  <div class="pagination-wrapper">
+  <!-- Pagination Controls Component: Navigation buttons and page info -->
+  <!-- Using Tailwind utilities for centering and width -->
+  <div class="flex justify-center w-full">
+    <!-- PrimeVue Card component -->
     <Card class="pagination-card">
       <template #content>
-        <div class="pagination-content">
+        <!-- Content container: flex-col on mobile, flex-row on larger screens (Tailwind responsive) -->
+        <div class="flex flex-col items-center gap-4 p-2 sm:flex-row sm:gap-6">
+          <!-- Previous Button: PrimeVue Button with gradient styling -->
           <Button
             label="Previous"
             icon="pi pi-chevron-left"
@@ -11,13 +16,18 @@
             :disabled="!hasPrevPage || loading"
             :loading="loading && hasPrevPage"
             @click="$emit('previous')"
-            class="pagination-button"
+            class="pagination-button min-w-[120px]"
+            :pt="{ root: { class: 'gradient-button' } }"
           />
-          <div class="flex align-items-center gap-2 pagination-info">
+          
+          <!-- Page Info: Gradient background box with page numbers -->
+          <div class="flex items-center gap-2 pagination-info">
             <span class="font-semibold text-lg">
               Page <span class="pagination-page-number">{{ currentPage }}</span> of {{ totalPages }}
             </span>
           </div>
+          
+          <!-- Next Button: PrimeVue Button with gradient styling -->
           <Button
             label="Next"
             icon="pi pi-chevron-right"
@@ -27,7 +37,8 @@
             :disabled="!hasNextPage || loading"
             :loading="loading && hasNextPage"
             @click="$emit('next')"
-            class="pagination-button"
+            class="pagination-button min-w-[120px]"
+            :pt="{ root: { class: 'gradient-button' } }"
           />
         </div>
       </template>
@@ -36,9 +47,11 @@
 </template>
 
 <script setup lang="ts">
+// PrimeVue Components
 import Card from 'primevue/card';
 import Button from 'primevue/button';
 
+// Component props: pagination state and loading status
 defineProps<{
   currentPage: number;
   totalPages: number;
@@ -47,6 +60,7 @@ defineProps<{
   loading: boolean;
 }>();
 
+// Component events: navigation actions
 defineEmits<{
   previous: [];
   next: [];
@@ -54,12 +68,7 @@ defineEmits<{
 </script>
 
 <style scoped>
-.pagination-wrapper {
-  display: flex;
-  justify-content: center;
-  width: 100%;
-}
-
+/* Card styling with border - kept in CSS for custom styling */
 .pagination-card {
   background: white;
   border-top: 2px solid #e0e0e0;
@@ -67,41 +76,23 @@ defineEmits<{
   margin: 0 auto;
 }
 
-.pagination-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1rem;
-  padding: 0.5rem;
+/* Override PrimeVue button styling with gradient (PrimeVue v4 uses data-pc-name) */
+.pagination-button :deep(button[data-pc-name='button']) {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%) !important;
+  border: none !important;
+  color: white !important;
 }
 
-@media (min-width: 640px) {
-  .pagination-content {
-    flex-direction: row;
-    gap: 1.5rem;
-  }
+.pagination-button :deep(button[data-pc-name='button']:hover:not(:disabled)) {
+  background: linear-gradient(135deg, #764ba2 0%, #f093fb 100%) !important;
 }
 
-.pagination-button {
-  min-width: 120px;
-}
-
-/* Gradient styling for pagination buttons */
-.pagination-button :deep(.p-button) {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
-  border: none;
-  color: white;
-}
-
-.pagination-button :deep(.p-button:hover:not(:disabled)) {
-  background: linear-gradient(135deg, #764ba2 0%, #f093fb 100%);
-}
-
-.pagination-button :deep(.p-button:disabled) {
+.pagination-button :deep(button[data-pc-name='button']:disabled) {
   background: var(--p-surface-100);
   color: var(--p-text-color-secondary);
 }
 
+/* Page info box with gradient background - complex styling kept in CSS */
 .pagination-info {
   padding: 0.75rem 1.5rem;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
@@ -113,12 +104,15 @@ defineEmits<{
   color: var(--p-primary-contrast-color);
 }
 
+/* Page number styling with golden color */
 .pagination-page-number {
-  color: var(--p-highlight-text-color);
+  color: #fbbf24; /* Golden color for emphasis */
   font-weight: 700;
   font-size: 1.5rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
+/* Responsive adjustments for mobile */
 @media (max-width: 640px) {
   .pagination-card :deep(.p-card-body) {
     padding: 1rem;

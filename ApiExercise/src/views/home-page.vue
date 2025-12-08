@@ -1,23 +1,28 @@
 <template>
-  <div class="home-page min-h-screen flex align-items-center justify-content-center p-4">
+  <!-- Home Page: Landing page with app introduction -->
+  <div class="home-page min-h-screen flex items-center justify-center p-4">
+    <!-- PrimeVue Card component with Tailwind utility classes for sizing -->
     <Card class="home-card max-w-5xl w-full">
       <template #content>
+        <!-- Content container with Tailwind spacing and responsive padding -->
         <div class="text-center py-6 px-4 md:px-6">
+          <!-- Header section with icon, title, and subtitle -->
           <div class="mb-5">
-            <div class="home-icon-wrapper">
+            <div class="inline-block mb-4">
               <i class="pi pi-star home-icon"></i>
             </div>
             <h1 class="home-title">Rick and Morty API</h1>
             <p class="home-subtitle">Character Explorer</p>
           </div>
 
+          <!-- Description section with Tailwind typography utilities -->
           <div class="mb-6 mt-6">
-            <p class="text-lg line-height-4 mb-4 text-color-secondary max-w-2xl mx-auto">
+            <p class="text-lg leading-relaxed mb-4 text-gray-600 max-w-2xl mx-auto">
               Welcome to the Rick and Morty API Exercise! This application demonstrates how to fetch
               data from an external API, implement pagination, and use Vue composables and stores
               for state management.
             </p>
-            <p class="text-base line-height-4 text-color-secondary max-w-2xl mx-auto">
+            <p class="text-base leading-relaxed text-gray-600 max-w-2xl mx-auto">
               Explore characters from the Rick and Morty universe, fetched from the
               <a
                 href="https://rickandmortyapi.com/api"
@@ -31,6 +36,7 @@
             </p>
           </div>
 
+          <!-- PrimeVue Button with gradient styling via PassThrough API -->
           <Button
             label="Explore Characters"
             icon="pi pi-users"
@@ -47,24 +53,21 @@
 </template>
 
 <script setup lang="ts">
+// PrimeVue Components
 import Card from 'primevue/card';
 import Button from 'primevue/button';
 </script>
 
 <style scoped>
+/* Page background gradient - kept in CSS as it's complex styling */
 .home-page {
   background: linear-gradient(135deg, #f8f5ff 0%, #faf5ff 50%, #fef5ff 100%);
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
+/* Card styling with hover effects - complex transitions kept in CSS */
 .home-card {
   box-shadow: var(--p-shadow-4);
-  transition:
-    transform 0.3s ease,
-    box-shadow 0.3s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
   border: 2px solid #667eea;
 }
 
@@ -73,11 +76,7 @@ import Button from 'primevue/button';
   box-shadow: var(--p-shadow-6);
 }
 
-.home-icon-wrapper {
-  display: inline-block;
-  margin-bottom: 1rem;
-}
-
+/* Gradient text styling for icon - complex gradient kept in CSS */
 .home-icon {
   font-size: 5rem;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
@@ -87,6 +86,7 @@ import Button from 'primevue/button';
   display: block;
 }
 
+/* Gradient text styling for title */
 .home-title {
   font-size: 3.5rem;
   font-weight: 700;
@@ -97,6 +97,7 @@ import Button from 'primevue/button';
   background-clip: text;
 }
 
+/* Gradient text styling for subtitle */
 .home-subtitle {
   font-size: 1.5rem;
   font-weight: 600;
@@ -107,6 +108,7 @@ import Button from 'primevue/button';
   margin: 0;
 }
 
+/* Gradient link styling with hover effect */
 .home-link {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
   -webkit-background-clip: text;
@@ -126,7 +128,7 @@ import Button from 'primevue/button';
   border-bottom: 2px solid #764ba2;
 }
 
-/* Gradient styling for home button (PrimeVue v4 uses data-pc-name) */
+/* Override PrimeVue button styling with gradient (PrimeVue v4 uses data-pc-name) */
 .home-button :deep(button[data-pc-name='button']) {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%) !important;
   border: none !important;
@@ -137,6 +139,7 @@ import Button from 'primevue/button';
   background: linear-gradient(135deg, #764ba2 0%, #f093fb 100%) !important;
 }
 
+/* Responsive design - mobile adjustments */
 @media (max-width: 768px) {
   .home-card :deep(.p-card-body) {
     padding: 1.5rem;
