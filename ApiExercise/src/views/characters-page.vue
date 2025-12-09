@@ -11,16 +11,18 @@
           <div class="flex items-center gap-4">
             <i class="pi pi-users header-icon"></i>
             <h1 class="header-title">Rick and Morty Characters</h1>
-              </div>
+          </div>
 
           <!-- Info section: page info and action buttons -->
           <!-- Using Tailwind flex utilities with responsive wrapping -->
-          <div class="flex flex-wrap items-center justify-between gap-2 pt-4 mt-6 border-t-2 border-purple-500">
+          <div
+            class="flex flex-wrap items-center justify-between gap-2 pt-4 mt-6 border-t-2 border-purple-500"
+          >
             <!-- Page info box with gradient background -->
             <div class="page-info">
               <i class="pi pi-list page-info-icon"></i>
               <span class="page-info-text">
-                Page {{ hasActiveFilters ? filteredPage : currentPage }} of {{ hasActiveFilters ? filteredTotalPages : totalPages }}
+                Page {{ displayPage }} of {{ displayTotalPages }}
               </span>
             </div>
 
@@ -37,13 +39,13 @@
                 :pt="{ root: { class: 'gradient-button' } }"
               />
               <!-- Home Button: PrimeVue Button with secondary styling -->
-              <Button 
-                label="Home" 
+              <Button
+                label="Home"
                 icon="pi pi-home"
                 iconPos="left"
-                severity="secondary" 
+                severity="secondary"
                 outlined
-                @click="$router.push('/')" 
+                @click="$router.push('/')"
                 class="min-w-[100px]"
               />
             </div>
@@ -52,7 +54,10 @@
       </div>
 
       <!-- Search and Filter Section: Search bar and sort dropdown -->
-      <div v-if="!error && (characters.length > 0 || allCharacters.length > 0)" class="search-filter-section mb-6">
+      <div
+        v-if="!error && (characters.length > 0 || allCharacters.length > 0)"
+        class="search-filter-section mb-6"
+      >
         <div class="flex flex-col sm:flex-row gap-4 items-stretch sm:items-center">
           <!-- Search Input: PrimeVue InputText with icon -->
           <div class="flex-1 search-input-wrapper">
@@ -68,16 +73,13 @@
 
           <!-- Sort Dropdown: PrimeVue Dropdown for sorting options -->
           <div class="sort-dropdown-wrapper">
-            <span class="p-input-icon-left">
-              <i class="pi pi-sort sort-icon"></i>
-              <Dropdown
-                v-model="sortOption"
-                :options="sortOptions"
-                optionLabel="label"
-                placeholder="Sort by..."
-                class="sort-dropdown"
-              />
-            </span>
+            <Dropdown
+              v-model="sortOption"
+              :options="sortOptions"
+              optionLabel="label"
+              placeholder="Sort by..."
+              class="sort-dropdown"
+            />
           </div>
         </div>
 
@@ -85,23 +87,29 @@
         <div v-if="hasActiveFilters" class="results-info mt-3">
           <i class="pi pi-info-circle results-info-icon"></i>
           <span class="results-info-text">
-            Showing {{ filteredAndSortedCharacters.length }} of {{ allCharactersLoaded ? allCharacters.length : characters.length }} characters
-            <span v-if="!allCharactersLoaded && hasActiveFilters" class="text-xs ml-2">(Loading all characters...)</span>
+            Showing {{ filteredAndSortedCharacters.length }} of
+            {{ allCharactersLoaded ? allCharacters.length : characters.length }} characters
+            <span v-if="!allCharactersLoaded && hasActiveFilters" class="text-xs ml-2"
+              >(Loading all characters...)</span
+            >
           </span>
         </div>
       </div>
 
       <!-- Loading, Error, Empty States: Conditional rendering based on state -->
-      <LoadingSpinner v-if="loading || loadingAllCharacters" :message="loadingAllCharacters ? 'Loading all characters...' : 'Loading characters...'" />
+      <LoadingSpinner
+        v-if="loading || loadingAllCharacters"
+        :message="loadingAllCharacters ? 'Loading all characters...' : 'Loading characters...'"
+      />
       <ErrorMessage v-else-if="error" :message="error" />
       <EmptyState v-else-if="paginatedCharacters.length === 0" message="No characters found" />
-      
+
       <!-- Characters Grid: Responsive grid using Tailwind grid utilities -->
       <!-- 4 columns on desktop, 3 on tablet, 2 on mobile, 1 on small screens -->
-        <div
+      <div
         v-else-if="paginatedCharacters.length > 0"
         class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-5 lg:gap-6 mb-4"
-        >
+      >
         <div v-for="character in paginatedCharacters" :key="character.id" class="min-w-0">
           <CharacterCard :character="character" />
         </div>
@@ -109,13 +117,15 @@
 
       <!-- Pagination Controls: Show for both filtered and unfiltered results -->
       <PaginationControls
-        v-if="!loading && !loadingAllCharacters && (characters.length > 0 || paginatedCharacters.length > 0)"
+        v-if="!loading && !loadingAllCharacters && displayTotalPages > 0"
         :current-page="hasActiveFilters ? filteredPage : currentPage"
         :total-pages="hasActiveFilters ? filteredTotalPages : totalPages"
         :has-next-page="hasActiveFilters ? filteredPage < filteredTotalPages : hasNextPage"
         :has-prev-page="hasActiveFilters ? filteredPage > 1 : hasPrevPage"
         :loading="loading || loadingAllCharacters"
-        @previous="hasActiveFilters ? goToFilteredPage(filteredPage - 1) : goToPage(currentPage - 1)"
+        @previous="
+          hasActiveFilters ? goToFilteredPage(filteredPage - 1) : goToPage(currentPage - 1)
+        "
         @next="hasActiveFilters ? goToFilteredPage(filteredPage + 1) : goToPage(currentPage + 1)"
       />
     </div>
@@ -165,7 +175,8 @@ const {
 
 // Search and Sort State
 const searchQuery = ref('');
-const sortOption = ref({ value: 'default', label: 'Default' });
+// Default to alphabetical so lists are ordered even before changing dropdown
+const sortOption = ref({ value: 'name-asc', label: 'Name (A-Z)' });
 
 // All Characters: Store all characters from all pages for filtering
 const allCharacters = ref<Character[]>([]);
@@ -178,13 +189,13 @@ const itemsPerPage = 20; // Number of characters per page
 
 // Sort Options: Available sorting methods
 const sortOptions = [
-  { value: 'default', label: 'Default' },
   { value: 'name-asc', label: 'Name (A-Z)' },
   { value: 'name-desc', label: 'Name (Z-A)' },
   { value: 'status', label: 'Status' },
   { value: 'species', label: 'Species' },
   { value: 'episodes-asc', label: 'Episodes (Low to High)' },
-  { value: 'episodes-desc', label: 'Episodes (High to Low)' }
+  { value: 'episodes-desc', label: 'Episodes (High to Low)' },
+  { value: 'default', label: 'API Order' }
 ];
 
 /**
@@ -193,7 +204,7 @@ const sortOptions = [
  */
 const fetchAllCharacters = async () => {
   if (allCharactersLoaded.value || loadingAllCharacters.value) return;
-  
+
   loadingAllCharacters.value = true;
   try {
     const allChars: Character[] = [];
@@ -234,9 +245,7 @@ const filteredAndSortedCharacters = computed(() => {
   // Filter by search query (case-insensitive search on name)
   if (searchQuery.value.trim()) {
     const query = searchQuery.value.toLowerCase().trim();
-    result = result.filter(character =>
-      character.name.toLowerCase().includes(query)
-    );
+    result = result.filter(character => character.name.toLowerCase().includes(query));
   }
 
   // Sort based on selected option
@@ -251,7 +260,7 @@ const filteredAndSortedCharacters = computed(() => {
       case 'status':
         result.sort((a, b) => {
           // Sort by status: Alive > Dead > unknown
-          const statusOrder: Record<string, number> = { 'Alive': 1, 'Dead': 2, 'unknown': 3 };
+          const statusOrder: Record<string, number> = { Alive: 1, Dead: 2, unknown: 3 };
           return (statusOrder[a.status] || 99) - (statusOrder[b.status] || 99);
         });
         break;
@@ -271,22 +280,39 @@ const filteredAndSortedCharacters = computed(() => {
 });
 
 /**
- * Computed property: Paginated filtered results
- * @returns Current page of filtered and sorted characters
+ * Computed property: Paginated results
+ * Uses client-side pagination when filters are active; otherwise shows current page data
  */
 const paginatedCharacters = computed(() => {
-  const filtered = filteredAndSortedCharacters.value;
-  const startIndex = (filteredPage.value - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  return filtered.slice(startIndex, endIndex);
+  if (hasActiveFilters.value) {
+    const filtered = filteredAndSortedCharacters.value;
+    const startIndex = (filteredPage.value - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    return filtered.slice(startIndex, endIndex);
+  }
+  return characters.value;
 });
 
 /**
  * Computed property: Total pages for filtered results
- * @returns Total number of pages for filtered results
  */
 const filteredTotalPages = computed(() => {
   return Math.ceil(filteredAndSortedCharacters.value.length / itemsPerPage);
+});
+
+/**
+ * Derived display values for the header / pagination
+ */
+const displayPage = computed(() => {
+  if (hasActiveFilters.value) {
+    if (filteredTotalPages.value === 0) return 0;
+    return Math.min(filteredPage.value, filteredTotalPages.value);
+  }
+  return currentPage.value;
+});
+
+const displayTotalPages = computed(() => {
+  return hasActiveFilters.value ? filteredTotalPages.value : totalPages.value;
 });
 
 /**
@@ -294,7 +320,9 @@ const filteredTotalPages = computed(() => {
  * @returns True if search or sort is active
  */
 const hasActiveFilters = computed(() => {
-  return searchQuery.value.trim() !== '' || (sortOption.value && sortOption.value.value !== 'default');
+  return (
+    searchQuery.value.trim() !== '' || (sortOption.value && sortOption.value.value !== 'default')
+  );
 });
 
 /**
@@ -302,6 +330,22 @@ const hasActiveFilters = computed(() => {
  */
 watch([searchQuery, sortOption], () => {
   filteredPage.value = 1;
+});
+
+/**
+ * Keep filtered page within bounds (including empty state)
+ */
+watch(filteredTotalPages, total => {
+  if (total === 0) {
+    filteredPage.value = 0;
+    return;
+  }
+  if (filteredPage.value > total) {
+    filteredPage.value = total;
+  }
+  if (filteredPage.value < 1) {
+    filteredPage.value = 1;
+  }
 });
 
 /**
@@ -318,11 +362,15 @@ const goToFilteredPage = (page: number) => {
 /**
  * Watch for filter activation to load all characters
  */
-watch(hasActiveFilters, (active) => {
-  if (active && !allCharactersLoaded.value && !loadingAllCharacters.value) {
-    fetchAllCharacters();
-  }
-});
+watch(
+  hasActiveFilters,
+  active => {
+    if (active && !allCharactersLoaded.value && !loadingAllCharacters.value) {
+      fetchAllCharacters();
+    }
+  },
+  { immediate: true }
+);
 
 /**
  * Lifecycle hook: Load data from localStorage on component mount
@@ -338,7 +386,7 @@ onMounted(() => {
     // Calculate pagination state based on current page
     hasNextPage.value = currentPage.value < totalPages.value;
     hasPrevPage.value = currentPage.value > 1;
-    
+
     // Load all characters if they exist in store
     if (characterStore.allCharacters.length > 0) {
       allCharacters.value = characterStore.allCharacters;
@@ -418,32 +466,25 @@ const goToPage = async (page: number) => {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.75rem 1.5rem;
-  background: linear-gradient(
-    135deg,
-    rgba(102, 126, 234, 0.1) 0%,
-    rgba(118, 75, 162, 0.1) 50%,
-    rgba(240, 147, 251, 0.1) 100%
-  );
+  padding: 0.65rem 1.25rem;
+  background: #f7f4ff;
   border-radius: var(--p-border-radius);
-  border: 1px solid #667eea;
-  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.15);
+  border: 1px solid #d7d1ff;
+  box-shadow: none;
+  cursor: default;
 }
 
 /* Gradient text styling for page info icon */
 .page-info-icon {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  font-size: 1.125rem;
+  color: #667eea;
+  font-size: 1rem;
 }
 
 /* Page info text styling */
 .page-info-text {
-  font-size: 1rem;
+  font-size: 0.975rem;
   font-weight: 600;
-  color: var(--p-text-color);
+  color: #2d2a32;
 }
 
 /* Override PrimeVue button styling with gradient (PrimeVue v4 uses data-pc-name) */
@@ -476,6 +517,12 @@ const goToPage = async (page: number) => {
   transition: all 0.3s ease;
 }
 
+.search-input-wrapper :deep(.p-input-icon-left),
+.sort-dropdown-wrapper :deep(.p-input-icon-left) {
+  position: relative;
+  display: block;
+}
+
 .search-input-wrapper :deep(.p-inputtext:focus) {
   border-color: #667eea;
   box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.2);
@@ -496,14 +543,18 @@ const goToPage = async (page: number) => {
 /* Sort Dropdown Wrapper: Fixed width with gradient border */
 .sort-dropdown-wrapper {
   width: 100%;
-  min-width: 200px;
+  min-width: 220px;
 }
 
 @media (min-width: 640px) {
   .sort-dropdown-wrapper {
     width: auto;
-    min-width: 220px;
+    min-width: 240px;
   }
+}
+
+.sort-dropdown-wrapper {
+  position: relative;
 }
 
 .sort-dropdown-wrapper :deep(.p-dropdown) {
@@ -511,6 +562,7 @@ const goToPage = async (page: number) => {
   border: 2px solid #e0e0e0;
   border-radius: var(--p-border-radius);
   transition: all 0.3s ease;
+  padding-left: 0.9rem;
 }
 
 .sort-dropdown-wrapper :deep(.p-dropdown:not(.p-disabled):hover) {
@@ -522,15 +574,8 @@ const goToPage = async (page: number) => {
   box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.2);
 }
 
-/* Sort Icon: Gradient color */
-.sort-icon {
-  position: absolute;
-  left: 0.75rem;
-  top: 50%;
-  transform: translateY(-50%);
-  color: #667eea;
-  font-size: 1.125rem;
-  z-index: 1;
+.sort-dropdown-wrapper :deep(.p-dropdown-label) {
+  padding-left: 0.25rem;
 }
 
 /* Results Info: Shows filtered count with gradient styling */

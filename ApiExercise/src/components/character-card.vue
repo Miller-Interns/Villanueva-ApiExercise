@@ -9,32 +9,28 @@
         <div class="character-image-wrapper">
           <img :src="character.image" :alt="character.name" class="character-image" />
         </div>
-        
+
         <!-- Details Section: Character information below image -->
         <!-- Using Tailwind padding and flex utilities -->
         <div class="character-details-section flex flex-col flex-grow gap-1 p-5">
           <!-- Character Name: Truncated to 2 lines if too long -->
           <h3 class="character-name">{{ character.name }}</h3>
-          
-          <!-- Status Section: Status tag and species info -->
-          <!-- Using Tailwind flex utilities for layout -->
-          <div class="flex flex-col gap-2">
-            <!-- PrimeVue Tag component for character status -->
-            <Tag 
-              :value="character.status" 
-              :severity="getStatusSeverity(character.status)"
-              class="character-status-tag self-start"
-            />
+
+          <!-- Status directly under the name -->
+          <Tag
+            :value="character.status"
+            :severity="getStatusSeverity(character.status)"
+            class="character-status-tag self-start mt-1 mb-2"
+          />
+
+          <!-- Info List: Species, Location, origin, and episode count -->
+          <!-- Added top margin to separate from status -->
+          <div class="flex flex-col gap-2.5 mt-1">
             <!-- Species info with icon using Tailwind flex utilities -->
             <div class="flex items-center gap-1.5 text-sm text-gray-600 font-medium">
               <i class="pi pi-tag text-purple-500 text-sm"></i>
               <span>{{ character.species }}</span>
             </div>
-          </div>
-          
-          <!-- Info List: Location, origin, and episode count -->
-          <!-- Using Tailwind flex utilities for vertical list layout -->
-          <div class="flex flex-col gap-2.5 mt-1">
             <!-- Location info -->
             <div class="flex items-start gap-2 text-sm text-gray-700 leading-relaxed">
               <i class="pi pi-map-marker text-red-500 text-base mt-0.5 flex-shrink-0"></i>
@@ -47,7 +43,9 @@
             </div>
             <!-- Episode count with gradient icon -->
             <div class="flex items-start gap-2 text-sm text-gray-700 leading-relaxed">
-              <i class="pi pi-play-circle character-episode-icon text-base mt-0.5 flex-shrink-0"></i>
+              <i
+                class="pi pi-play-circle character-episode-icon text-base mt-0.5 flex-shrink-0"
+              ></i>
               <span class="flex-1 break-words line-clamp-2">
                 {{ character.episode.length }}
                 {{ character.episode.length === 1 ? 'episode' : 'episodes' }}
