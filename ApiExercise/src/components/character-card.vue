@@ -9,19 +9,19 @@
         <div class="character-image-wrapper">
           <img :src="character.image" :alt="character.name" class="character-image" />
         </div>
-
+        
         <!-- Details Section: Character information below image -->
         <!-- Using Tailwind padding and flex utilities -->
         <div class="character-details-section flex flex-col flex-grow gap-1 p-5">
           <!-- Character Name: Truncated to 2 lines if too long -->
           <h3 class="character-name">{{ character.name }}</h3>
-
+          
           <!-- Status Section: Status tag and species info -->
           <!-- Using Tailwind flex utilities for layout -->
           <div class="flex flex-col gap-2">
             <!-- PrimeVue Tag component for character status -->
-            <Tag
-              :value="character.status"
+            <Tag 
+              :value="character.status" 
               :severity="getStatusSeverity(character.status)"
               class="character-status-tag self-start"
             />
@@ -31,7 +31,7 @@
               <span>{{ character.species }}</span>
             </div>
           </div>
-
+          
           <!-- Info List: Location, origin, and episode count -->
           <!-- Using Tailwind flex utilities for vertical list layout -->
           <div class="flex flex-col gap-2.5 mt-1">

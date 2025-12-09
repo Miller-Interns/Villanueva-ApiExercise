@@ -3,44 +3,44 @@
   <!-- Using Tailwind utilities for centering and width -->
   <div class="flex justify-center w-full">
     <!-- PrimeVue Card component -->
-    <Card class="pagination-card">
-      <template #content>
+  <Card class="pagination-card">
+    <template #content>
         <!-- Content container: flex-col on mobile, flex-row on larger screens (Tailwind responsive) -->
         <div class="flex flex-col items-center gap-4 p-2 sm:flex-row sm:gap-6">
           <!-- Previous Button: PrimeVue Button with secondary outlined styling (matches Home button) -->
-          <Button
-            label="Previous"
-            icon="pi pi-chevron-left"
+        <Button
+          label="Previous"
+          icon="pi pi-chevron-left"
             severity="secondary"
             outlined
-            :disabled="!hasPrevPage || loading"
-            :loading="loading && hasPrevPage"
-            @click="$emit('previous')"
+          :disabled="!hasPrevPage || loading"
+          :loading="loading && hasPrevPage"
+          @click="$emit('previous')"
             class="min-w-[120px]"
-          />
+        />
           
           <!-- Page Info: Gradient background box with page numbers -->
           <div class="flex items-center gap-2 pagination-info">
-            <span class="font-semibold text-lg">
+          <span class="font-semibold text-lg">
               Page <span class="pagination-page-number">{{ currentPage }}</span> of {{ totalPages }}
-            </span>
-          </div>
+          </span>
+        </div>
           
           <!-- Next Button: PrimeVue Button with secondary outlined styling (matches Home button) -->
-          <Button
-            label="Next"
-            icon="pi pi-chevron-right"
-            iconPos="right"
+        <Button
+          label="Next"
+          icon="pi pi-chevron-right"
+          iconPos="right"
             severity="secondary"
             outlined
-            :disabled="!hasNextPage || loading"
-            :loading="loading && hasNextPage"
-            @click="$emit('next')"
+          :disabled="!hasNextPage || loading"
+          :loading="loading && hasNextPage"
+          @click="$emit('next')"
             class="min-w-[120px]"
-          />
-        </div>
-      </template>
-    </Card>
+        />
+      </div>
+    </template>
+  </Card>
   </div>
 </template>
 

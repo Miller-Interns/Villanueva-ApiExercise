@@ -14,7 +14,7 @@
             <h1 class="home-title">Rick and Morty API</h1>
             <p class="home-subtitle">Character Explorer</p>
           </div>
-
+          
           <!-- Description section with Tailwind typography utilities -->
           <div class="mb-6 mt-6">
             <p class="text-lg leading-relaxed mb-4 text-gray-600 max-w-2xl mx-auto">
@@ -35,16 +35,16 @@
               >.
             </p>
           </div>
-
+          
           <!-- PrimeVue Button with gradient styling via PassThrough API -->
-          <Button
-            label="Explore Characters"
+          <Button 
+            label="Explore Characters" 
             icon="pi pi-users"
             iconPos="right"
             size="large"
             class="mt-2 home-button"
             :pt="{ root: { class: 'gradient-button' } }"
-            @click="$router.push('/app')"
+            @click="$router.push('/app')" 
           />
         </div>
       </template>
