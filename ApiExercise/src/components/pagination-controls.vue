@@ -7,7 +7,7 @@
       <template #content>
         <!-- Content container: flex-col on mobile, flex-row on larger screens (Tailwind responsive) -->
         <div class="flex flex-col items-center gap-4 p-2 sm:flex-row sm:gap-6">
-          <!-- Previous Button: PrimeVue Button with gradient styling -->
+          <!-- Previous Button: PrimeVue Button with secondary outlined styling (matches Home button) -->
           <Button
             label="Previous"
             icon="pi pi-chevron-left"
@@ -16,8 +16,7 @@
             :disabled="!hasPrevPage || loading"
             :loading="loading && hasPrevPage"
             @click="$emit('previous')"
-            class="pagination-button min-w-[120px]"
-            :pt="{ root: { class: 'gradient-button' } }"
+            class="min-w-[120px]"
           />
           
           <!-- Page Info: Gradient background box with page numbers -->
@@ -27,7 +26,7 @@
             </span>
           </div>
           
-          <!-- Next Button: PrimeVue Button with gradient styling -->
+          <!-- Next Button: PrimeVue Button with secondary outlined styling (matches Home button) -->
           <Button
             label="Next"
             icon="pi pi-chevron-right"
@@ -37,8 +36,7 @@
             :disabled="!hasNextPage || loading"
             :loading="loading && hasNextPage"
             @click="$emit('next')"
-            class="pagination-button min-w-[120px]"
-            :pt="{ root: { class: 'gradient-button' } }"
+            class="min-w-[120px]"
           />
         </div>
       </template>
@@ -76,21 +74,7 @@ defineEmits<{
   margin: 0 auto;
 }
 
-/* Override PrimeVue button styling with gradient (PrimeVue v4 uses data-pc-name) */
-.pagination-button :deep(button[data-pc-name='button']) {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%) !important;
-  border: none !important;
-  color: white !important;
-}
-
-.pagination-button :deep(button[data-pc-name='button']:hover:not(:disabled)) {
-  background: linear-gradient(135deg, #764ba2 0%, #f093fb 100%) !important;
-}
-
-.pagination-button :deep(button[data-pc-name='button']:disabled) {
-  background: var(--p-surface-100);
-  color: var(--p-text-color-secondary);
-}
+/* Pagination buttons now use PrimeVue's default secondary outlined styling to match Home button */
 
 /* Page info box with gradient background - complex styling kept in CSS */
 .pagination-info {
